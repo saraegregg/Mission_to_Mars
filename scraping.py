@@ -19,6 +19,7 @@ def scrape_all():
         "news_paragraph": news_paragraph,
         "featured_image": featured_image(browser),
         "facts": mars_facts(),
+        "hemispheres": hemisphere(browser),
         "last_modified": dt.datetime.now()
     }
 
@@ -28,10 +29,9 @@ def scrape_all():
 
 
 def mars_news(browser):
-
     # Scrape Mars News
     # Visit the mars nasa news site
-    url = 'https://data-class-mars.s3.amazonaws.com/Mars/index.html'
+    url = 'https://redplanetscience.com'
     browser.visit(url)
 
     # Optional delay for loading the page
@@ -44,12 +44,16 @@ def mars_news(browser):
     # Add try/except for error handling
     try:
         slide_elem = news_soup.select_one('div.list_text')
+        print(f"slide_elem is {slide_elem}")
         # Use the parent element to find the first 'a' tag and save it as 'news_title'
         news_title = slide_elem.find('div', class_='content_title').get_text()
+        print(f"news_title is {news_title}")
         # Use the parent element to find the paragraph text
         news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
+        print(f"news_p is {news_p}")
 
-    except AttributeError:
+    except AttributeError as err:
+        print(f"Attribute error: {err}")
         return None, None
 
     return news_title, news_p
@@ -96,6 +100,48 @@ def mars_facts():
 
     # Convert dataframe into HTML format, add bootstrap
     return df.to_html(classes="table table-striped")
+
+#del 2: create a function that will scrape the hemisphere data by using your code from challenge.py returning scraped data as list of dictionaries
+def hemisphere(browser):
+    #visit url
+    url = 'https://marshemispheres.com/'
+    browser.visit(url)
+
+    #create object to hold image urls and titles
+    hemisphere_image_urls = []
+
+    #Find list of image urls on main page
+    links = browser.find_by_css("a.product-item img")
+
+    #iterate through the links
+    for i in range(len(links)):
+        #Create dictionary to hold image and title
+        hemisphere = {}
+        
+        #click on link
+        browser.find_by_css("a.product-item img")[i].click()
+        
+        # Parse the resulting html with soup
+        html = browser.html
+        img_soup = soup(html, 'html.parser')
+
+        #find the url to the image
+        image_link = browser.find_by_text('Sample').first
+        hemisphere['img_url'] = image_link['href']
+        
+        #Add hemisphere title to the dictionary
+        hemisphere['title'] = browser.find_by_css('h2.title').text
+        
+        #Add the dictionary entries into the original list (step 2)
+        hemisphere_image_urls.append(hemisphere)
+        
+        #navigate back to main page for next link/image
+        browser.back()
+    
+    print(hemisphere_image_urls)
+    #return dictionary with links:titles
+    return hemisphere_image_urls
+
 
 if __name__ == "__main__":
 
