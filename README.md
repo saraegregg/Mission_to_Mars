@@ -32,5 +32,11 @@ Continue to polish the web app constructed up until this point in the module by 
 - Flask 1.1.2
 
 ### Challenge Summary
+Some of the customizations I added to the web app design include:
+-a red planet red web scraping button that is larger and more pronounced
+-bold text for headers and uniform header sizing
+-larger and round images of the hemispheres, so web app users can see the planet as though they were looking through a telescope at the night sky
 
-![](https://github.com/hackydunk/Mission-to-Mars/blob/master/webapp_screenshot.PNG) 
+![](https://github.com/saraegregg/Mod10_Mission_to_Mars/blob/main/images/image1.png)
+![](https://github.com/saraegregg/Mod10_Mission_to_Mars/blob/main/images/image2.png) 
+
