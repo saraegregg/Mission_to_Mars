@@ -44,13 +44,10 @@ def mars_news(browser):
     # Add try/except for error handling
     try:
         slide_elem = news_soup.select_one('div.list_text')
-        print(f"slide_elem is {slide_elem}")
         # Use the parent element to find the first 'a' tag and save it as 'news_title'
         news_title = slide_elem.find('div', class_='content_title').get_text()
-        print(f"news_title is {news_title}")
         # Use the parent element to find the paragraph text
         news_p = slide_elem.find('div', class_='article_teaser_body').get_text()
-        print(f"news_p is {news_p}")
 
     except AttributeError as err:
         print(f"Attribute error: {err}")
